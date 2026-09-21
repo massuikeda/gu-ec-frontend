@@ -1,29 +1,43 @@
-// app/products/[productId]/page.tsx
 "use client";
 
+import { useState } from "react";
 import { dummyProduct } from "@/data/dummyProducts";
 
-export default function ProductDetailPage() {
-  const product = dummyProduct; // 今はダミーデータ固定。将来Backend連携時にproductIdで検索する形に変更する
-
-    // 重複を除いた色の一覧を作る
+// exportは他のページから使っていいよということ
+// defaultはこの関数だけを返すよってこと
+// functionは関数
+export default function ProductDetailsPage() {
+  const product = dummyProduct;
   const colors = Array.from(new Set(product.variations.map((v) => v.color)));
 
-console.log("①", product.variations);
-
-console.log("①", product.variations);
-
-console.log("②",new Set(product.variations.map((v) => v.color)));
-console.log("④",Array.from)
-
-console.log("②", product.variations.map((v) => v.color));
-console.log("③", new Set(product.variations.map((v) => v.color)));
-console.log("④", Array.from(new Set(product.variations.map((v) => v.color))));
+  // 前が現在の値、後ろが次の値
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const colorSwatchMap: Record<string, string> = {
+    ブラック: "#1a1a1a",
+    ホワイト: "#f2f2f2",
+  };
 
   return (
     <div>
       <h1>{product.name}</h1>
-      {/* ここから商品情報・カラー選択・サイズ選択・数量入力を実装していく */}
+      <div>
+        {colors.map((color) => (
+          <button
+            key={color}
+            onClick={() => setSelectedColor(color)}
+            style={{
+              width: "32px",
+              height: "32px",
+              borderRadius: "50%",
+              backgroundColor: colorSwatchMap[color],
+              border:
+                selectedColor === color ? "2px solid black" : "1px solid #ccc",
+              cursor: "pointer",
+            }}
+          />
+        ))}
+      </div>
+      <p>選択中の色：{selectedColor ?? "未選択"}</p>
     </div>
   );
 }
