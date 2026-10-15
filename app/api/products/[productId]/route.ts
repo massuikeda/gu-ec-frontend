@@ -9,3 +9,5 @@ export async function GET(
   const { productId } = await params;
   return proxyToBackend(req, `/api/products/${productId}`);
 }
+
+// よろしく
